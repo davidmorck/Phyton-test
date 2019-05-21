@@ -26,6 +26,7 @@ for art in artists:
 a_artist = int(input("Ange en artists nummer> "))
 
 print("")
+print("-----------------------")
 print ("Du har valt " + artists[a_artist])
 
 dinArtist = artisterArr[a_artist]

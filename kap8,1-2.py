@@ -6,10 +6,9 @@ def miles_km(dist):
     nKm = dist * 0.621
     print(dist, "miles motsvarar", nKm, "km")
 
-anvDist = input("Ange en distans i km eller miles")
+anvDist = input("Ange en distans i km eller miles> ")
 
 numChar = len(anvDist) - 1
-numInt = int(anvDist)
-print(numInt)
-#if (anvDist[numChar] == "m"):
-    #km_miles(anvDist)
+
+if (anvDist[numChar] == "m"):
+    km_miles(anvDist)

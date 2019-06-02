@@ -5,8 +5,11 @@ from docx.enum.text import WD_COLOR_INDEX
 print("Ange filen som du vill hämta data ifrån?")
 print("Filen ska vara i samma format som den bifogade filen 'bedömning_progr.xlsx'")
 xlInput = input("> ")
-wb = openpyxl.load_workbook(xlInput) #laddar in kalkylarket som anges i python-programmet
-
+if len(xlInput)>0:
+    wb = openpyxl.load_workbook(xlInput) #laddar in kalkylarket som anges i python-programmet
+else: 
+    print("Ingen excel-fil angavs, använder 'bedömning_progr.xlsx'")
+    wb = openpyxl.load_workbook("bedömning_progr.xlsx")
 sheet1 = wb.get_sheet_by_name("Centralt innehåll") #namnger de olika arken till sheet 1,2,3,4
 sheet2 = wb.get_sheet_by_name("Kunskapskrav")
 sheet3 = wb.get_sheet_by_name("kraven")
@@ -53,10 +56,11 @@ info = { #vi gör ett objekt med informationen som finns i ark 4.
     "Klass": sheet4.cell(row = 3, column = 2).value}
 
 def createDoc(namn):#funktionen för att skapa dokument, tar in variabeln: elev
+    elNamn = elev[namn]
     doc = docx.Document() #skapar ett dokument som heter doc
     doc.add_heading("Bedömningsmatris "+info["Kurs"],level = 0)
     doc.add_heading("Klass: "+ info["Klass"], level=2)
-    doc.add_heading("Namn: "+ elev[namn], level = 2)
+    doc.add_heading("Namn: "+ elNamn, level = 2)
     doc.add_heading("Centralt innehåll", level=1)
 
     for a in range(0,len(cenUpp)-1): #gör listan med kursens innehåll
@@ -97,7 +101,7 @@ def createDoc(namn):#funktionen för att skapa dokument, tar in variabeln: elev
             font = aRun.font
             font.highlight_color = 4
 
-    doc.save(elev[namn]+".docx") #till sist så sparar vi dokumentet
+    doc.save(elNamn+".docx") #till sist så sparar vi dokumentet
 
 for namn in range(0,len(elev)):
     createDoc(namn)

@@ -3,7 +3,7 @@ import docx
 from docx.enum.text import WD_COLOR_INDEX
 
 print("Ange filen som du vill hämta data ifrån?")
-print("Filen ska vara i samma format som den bifogade filen 'Bedömning_prog.xlsx'")
+print("Filen ska vara i samma format som den bifogade filen 'bedömning_progr.xlsx'")
 xlInput = input("> ")
 wb = openpyxl.load_workbook(xlInput) #laddar in kalkylarket som anges i python-programmet
 

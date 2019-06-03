@@ -15,6 +15,8 @@ sheet2 = wb.get_sheet_by_name("Kunskapskrav")
 sheet3 = wb.get_sheet_by_name("kraven")
 sheet4 = wb.get_sheet_by_name("Info")
 
+#första delen av koden är till för att ta in data från excel-arket och lägga in det i arrayer och objekt i arrayer.
+
 elev = [sheet2.cell(row = i, column = 1).value for i in range(2,sheet2.max_row + 1)] #en array med alla namn
 
 docI = [[ #en array med objekt där varje objekt innehåller vilken nivå varje person har uppnått i alla de olika kraven
@@ -55,7 +57,7 @@ info = { #vi gör ett objekt med informationen som finns i ark 4.
     "Kurs": sheet4.cell(row = 2, column = 2).value,
     "Klass": sheet4.cell(row = 3, column = 2).value}
 
-def createDoc(namn):#funktionen för att skapa dokument, tar in variabeln: elev
+def createDoc(namn):#funktionen för att skapa dokument, tar in variabeln: elev. Varje elev har en plats i arrayen och därför är namn en integer.
     elNamn = elev[namn]
     doc = docx.Document() #skapar ett dokument som heter doc
     doc.add_heading("Bedömningsmatris "+info["Kurs"],level = 0)
@@ -66,8 +68,8 @@ def createDoc(namn):#funktionen för att skapa dokument, tar in variabeln: elev
     for a in range(0,len(cenUpp)-1): #gör listan med kursens innehåll
         par = doc.add_paragraph()
         par.style = "List Bullet"
-        run = par.add_run(cenUpp[a])
-        if cenGen[namn][a] ==  "Genomfört": #om den delen som skrivs ut är genomförd så blir den i fet stil.
+        run = par.add_run(cenUpp[a]) #skriver in värdet cenUpp[a]
+        if cenGen[namn][a] ==  "Genomfört": #om den delen som skrivs ut är genomförd så blir den skriven i fet stil.
             run.bold=True
 
     doc.add_heading("Kunskapskrav", level=1)
@@ -103,5 +105,5 @@ def createDoc(namn):#funktionen för att skapa dokument, tar in variabeln: elev
 
     doc.save(elNamn+".docx") #till sist så sparar vi dokumentet
 
-for namn in range(0,len(elev)):
+for namn in range(0,len(elev)): #Vi kallar på funktionen och lägger in en siffra mellan 0 till den sista eleven i listan av elever(därav len(elev))
     createDoc(namn)

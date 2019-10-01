@@ -1,59 +1,58 @@
 import requests
 import ui
-artists = ["Ariana Grande",
-"Avicii",
-"Blink -182",
-"Brad Paisley",
-"Ed Sheeran",
-"Imagine Dragons",
-"Maroon 5",
-"Scorpions"]
+artists = []
 
 idUrl = "https://5hyqtreww2.execute-api.eu-north-1.amazonaws.com/artists/"
 
 artistsArr = requests.get(idUrl)
-artistJson = artistsArr.json()
-artisterArr = artistJson["artists"]
+artistJson = artistsArr.json()["artists"]
 
-nummer = 0
-ui.line(True)
-ui.header("Välkommen till artist-wiki")
-ui.line(True)
+for artist in artistJson:
+    artists.append(artist["name"])
 
-for art in artists:
-    ui.echo(art + " ----- " + str(nummer))
+while True != False:
+    ui.line(True)
+    ui.header("Välkommen till artist-wiki")
+    ui.line(True)
 
+    nummer = 0
+    for art in artists:
+        ui.echo(art + " ----- " + str(nummer))
+        nummer +=1
+    u_inp = ui.prompt("Ange en artists nummer eller 'exit' om du vill avsluta programmet> ")
+    if "exit" in u_inp.lower():
+        break
+    else:
+        try:
 
-    nummer +=1
+            a_artist = int(u_inp)
 
-a_artist = int(ui.prompt("Ange en artists nummer> "))
+            ui.line()
+            ui.echo("Du har valt " + artists[a_artist])
 
-ui.line()
-ui.echo("Du har valt " + artists[a_artist])
+            dinArtist = artistJson[a_artist]["id"]
 
-dinArtist = artisterArr[a_artist]
-dinArtistId = dinArtist["id"]
+            getIdUrl = idUrl + dinArtist
 
-getIdUrl = idUrl + dinArtistId
+            artArr = requests.get(getIdUrl)
+            artJson = artArr.json()["artist"]
 
-artArr = requests.get(getIdUrl)
-artJson = artArr.json()
-artJsonObj = artJson["artist"]
+            artGenre = artJson["genres"]
+            artY = artJson["years_active"]
+            artM = artJson["members"]
+            artArray = [artGenre,artY,artM]
+            typeOfData = ["Genre:", "Active Years:", "Members:"]
 
-artGenre = artJsonObj["genres"]
-artY = artJsonObj["years_active"]
-artM = artJsonObj["members"]
-artArray = [artGenre,artY,artM]
-typeOfData = ["Genre:", "Active Years:", "Members:"]
+            num1 = 0
+            ui.line()
 
-num1 = 0
-ui.line()
-
-for j in artArray:
-    ui.echo(typeOfData[num1])
-
-    for i in j:
-        ui.echo(i.capitalize())
-    ui.line()
-    num1 += 1
-
+            for j in artArray:
+                ui.echo(typeOfData[num1])
+                for i in j:
+                    ui.echo(i.capitalize())
+                ui.line()
+                num1 += 1
+        except:
+            print("Invalid input")
+        input("Tryck enter för att fortsätta")
+        ui.clear()
